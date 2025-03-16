@@ -61,10 +61,10 @@ def checkout(request):
 
 def home(request):
     products = [
-        {"name": "Mask", "description": "Protective face mask", "price": 10, "image": static('images/mask.jpeg'), "availability": "In stock"},
-        {"name": "Gloves", "description": "Trendy washable gloves", "price": 60, "image": static("images/gloves.jpeg"), "availability": "In stock"},
-        {"name": "Cap", "description": "Comfortable cotton cap", "price": 100, "image": static("images/cap.jpeg"), "availability": "out of stock"},
-        {"name": "Scarf", "description": "Stylish winter scarf", "price": 200, "image": static("images/scraf.jpeg"), "availability": "In stock"}
+        {"name": "Mask", "description": "Protective face mask", "price": 10, "image": 'images/mask.jpeg', "availability": "In stock"},
+        {"name": "Gloves", "description": "Trendy washable gloves", "price": 60, "image": "images/gloves.jpeg", "availability": "In stock"},
+        {"name": "Cap", "description": "Comfortable cotton cap", "price": 100, "image": "images/cap.jpeg", "availability": "out of stock"},
+        {"name": "Scarf", "description": "Stylish winter scarf", "price": 200, "image": "images/scraf.jpeg", "availability": "In stock"}
     ]
     return render(request, 'home.html', {'products': products})
 
