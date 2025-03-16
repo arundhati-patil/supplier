@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Mask Shop</title>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">SupplierHub</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/checkout/">Checkout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+        <h1 class="text-center mb-4">Welcome</h1>
+
+        <div class="row">
+            {% for product in products %}
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <img src="{% static product.image %}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <p class="text-success fw-bold">Price: ₹{{ product.price }}</p>
+                        <p class="text-success">{{ product.availability }}</p>
+                        <input type="number" class="form-control mb-2" value="1" min="1" id="qty-{{ product.id }}">
+                        <button class="btn btn-primary" onclick="addToCart('{{ product.name }}', {{ product.price }}, 'qty-{{ product.id }}')">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="/checkout/" class="btn btn-success">Go to Checkout</a>
+        </div>
+    </div>
+
+    <script>
+        function addToCart(product, price, qtyId) {
+            let quantity = document.getElementById(qtyId).value;
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            // Add item to cart
+            cart.push({ product, price, quantity });
+
+            // Save cart to localStorage
+            localStorage.setItem("cart", JSON.stringify(cart));
+
+            alert("Added to cart!");
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
