@@ -1,15 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Mask Shop</title>
-    {% load static %}
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SupplierHub</title>
+    {% load static %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            font-family: 'Poppins', sans-serif;
+        }
+        .hero-section {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            height: 30vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+        .hero-section h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .product-card {
+            transition: all 0.4s ease-in-out;
+            border-radius: 15px;
+            overflow: hidden;
+            height: 100%;
+        }
+        .product-card:hover {
+            transform: scale(1.08);
+            box-shadow: 0 10px 20px rgba(255, 75, 43, 0.3);
+        }
+        .btn-primary {
+            background-color: #ff4b2b;
+            border: none;
+            transition: background 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #ff416c;
+        }
+        .footer {
+            background: #0f3460;
+            color: #e0e0e0;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-4">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">SupplierHub</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -21,16 +67,20 @@
                     <li class="nav-item"><a class="nav-link" href="/checkout/">Checkout</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
                 </ul>
+
             </div>
         </div>
     </nav>
 
-        <h1 class="text-center mb-4">Welcome</h1>
+    <header class="hero-section">
+        <h1>Welcome to SupplierHub</h1>
+    </header>
 
+    <div class="container mt-5">
         <div class="row">
             {% for product in products %}
             <div class="col-md-3">
-                <div class="card shadow-sm">
+                <div class="card product-card">
                     <img src="{% static product.image %}" class="card-img-top" alt="{{ product.name }}">
                     <div class="card-body text-center">
                         <h5 class="card-title">{{ product.name }}</h5>
@@ -44,27 +94,62 @@
             </div>
             {% endfor %}
         </div>
+    </div>
 
-        <div class="text-center mt-4">
+    <div class="text-center mt-4">
             <a href="/checkout/" class="btn btn-success">Go to Checkout</a>
-        </div>
     </div>
 
     <script>
         function addToCart(product, price, qtyId) {
-            let quantity = document.getElementById(qtyId).value;
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let quantity = parseInt(document.getElementById(qtyId).value);
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-            // Add item to cart
-            cart.push({ product, price, quantity });
+    // Check if the product already exists in the cart
+    let existingItem = cart.find(item => item.product === product);
 
-            // Save cart to localStorage
-            localStorage.setItem("cart", JSON.stringify(cart));
+    if (existingItem) {
+        // If product exists, update the quantity
+        existingItem.quantity += quantity;
+    } else {
+        // If not, add a new entry
+        cart.push({ product, price, quantity });
+    }
 
-            alert("Added to cart!");
-        }
+    // Save updated cart back to localStorage
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    // Show success message
+    showToast(`${product} added to cart!`);
+}
+
+function showToast(message) {
+    let toast = document.createElement("div");
+    toast.innerText = message;
+    toast.style.position = "fixed";
+    toast.style.bottom = "20px";
+    toast.style.right = "20px";
+    toast.style.background = "#28a745";
+    toast.style.color = "white";
+    toast.style.padding = "10px 20px";
+    toast.style.borderRadius = "5px";
+    toast.style.boxShadow = "0px 4px 6px rgba(0, 0, 0, 0.1)";
+    toast.style.zIndex = "1000";
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);  // Disappears after 3 seconds
+}
+
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <footer class="footer mt-5 text-center py-3">
+        <p>&copy; 2025 SupplierHub. All Rights Reserved.</p>
+    </footer>
+
 </body>
 </html>
